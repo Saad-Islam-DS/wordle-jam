@@ -51,6 +51,8 @@
       document.getElementById('keyboard').addEventListener('click', (e) => {
         const btn = e.target.closest('[data-key]');
         if (!btn) return;
+        // Otherwise Space on the physical keyboard re-presses the last clicked key.
+        btn.blur();
         handleKey(btn.dataset.key);
       });
     },
