@@ -9,7 +9,6 @@
   --present-fg: #241726;
   --absent: #4a3d4e;
   --key-bg: #7a6b80;
-  --key-absent: #3b2f40;
   --font: ui-rounded, 'SF Pro Rounded', 'Arial Rounded MT Bold', system-ui, sans-serif;
 }
 
@@ -113,11 +112,19 @@ main {
 
 .key.correct { background: var(--correct); }
 .key.present { background: var(--present); color: var(--present-fg); }
-.key.absent  { background: var(--key-absent); }
+.key.absent  { visibility: hidden; pointer-events: none; }
 
 .key:hover { filter: brightness(0.85); }
 
-/* TODO (B): flip animation (B-03) */
+.tile.flip { animation: flip 300ms ease-in-out both; }
+
+@keyframes flip {
+  50% { transform: rotateX(90deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile.flip { animation: none; }
+}
 
 @media (max-width: 500px) {
   body { min-height: 100dvh; }
