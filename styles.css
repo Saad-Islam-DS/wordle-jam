@@ -8,6 +8,8 @@
   --present: #e8a23a;
   --present-fg: #241726;
   --absent: #4a3d4e;
+  --key-bg: #7a6b80;
+  --key-absent: #3b2f40;
   --font: ui-rounded, 'SF Pro Rounded', 'Arial Rounded MT Bold', system-ui, sans-serif;
 }
 
@@ -89,14 +91,30 @@ main {
 }
 
 .key {
-  padding: 12px 10px;
-  background: var(--tile-border);
+  /* shrinks below 40px so ten keys still fit on a phone */
+  --key-width: min(40px, calc((100vw - 68px) / 10));
+  width: var(--key-width);
+  height: 52px;
+  padding: 0;
+  background: var(--key-bg);
   color: var(--fg);
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   font-family: var(--font);
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
 }
 
-/* TODO (B): keyboard sizing (B-02), flip animation (B-03) */
+.key.wide {
+  width: calc(var(--key-width) * 1.5);
+  font-size: min(12px, 3vw);
+}
+
+.key.correct { background: var(--correct); }
+.key.present { background: var(--present); color: var(--present-fg); }
+.key.absent  { background: var(--key-absent); }
+
+.key:hover { filter: brightness(0.85); }
+
+/* TODO (B): flip animation (B-03) */

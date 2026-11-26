@@ -2,7 +2,12 @@
 // Exports: window.UI
 
 (function () {
-  const KEY_ROWS = ['qwertyuiop', 'asdfghjkl', 'Zxcvbnm B']; // Z=Enter, B=Backspace
+  const KEY_ROWS = [
+    [...'qwertyuiop'],
+    [...'asdfghjkl'],
+    ['Enter', ...'zxcvbnm', 'Backspace'],
+  ];
+  const KEY_LABELS = { Enter: 'ENTER', Backspace: '⌫' };
   let boardEl, keyboardEl;
   let currentGuess = '';
 
@@ -28,14 +33,13 @@
     for (const row of KEY_ROWS) {
       const rowEl = document.createElement('div');
       rowEl.className = 'key-row';
-      for (const ch of row) {
-        if (ch === ' ') continue;
+      for (const value of row) {
         const key = document.createElement('button');
-        const label = ch === 'Z' ? 'ENTER' : ch === 'B' ? '⌫' : ch.toUpperCase();
-        const value = ch === 'Z' ? 'Enter' : ch === 'B' ? 'Backspace' : ch;
-        key.textContent = label;
+        key.type = 'button';
+        key.textContent = KEY_LABELS[value] || value.toUpperCase();
         key.dataset.key = value;
-        key.className = 'key';
+        key.className = value.length > 1 ? 'key wide' : 'key';
+        if (value === 'Backspace') key.setAttribute('aria-label', 'Backspace');
         rowEl.appendChild(key);
       }
       keyboardEl.appendChild(rowEl);
