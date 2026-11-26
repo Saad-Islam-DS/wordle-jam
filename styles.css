@@ -163,6 +163,31 @@ main {
 
 .play-again:hover { filter: brightness(0.85); }
 
+.legend {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.swatch.correct { background: var(--correct); }
+.swatch.present { background: var(--present); }
+.swatch.absent  { background: var(--absent); }
+
 @media (max-width: 500px) {
   body { min-height: 100dvh; }
 
@@ -173,10 +198,13 @@ main {
   }
 
   #board {
-    /* fit both directions: 354px is everything on screen that isn't tile height */
-    --tile: clamp(34px, min((100vw - 56px) / 5, (100dvh - 354px) / 6), 62px);
-    margin-block: auto;
+    /* fit both directions: 386px is everything on screen that isn't tile height */
+    --tile: clamp(34px, min((100vw - 56px) / 5, (100dvh - 386px) / 6), 62px);
+    margin-top: auto;
   }
+
+  .legend { margin-bottom: auto; gap: 10px; font-size: 12px; }
+  .legend li { gap: 4px; }
 
   .row { grid-auto-columns: var(--tile); }
 

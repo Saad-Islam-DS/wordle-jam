@@ -68,6 +68,16 @@
     }
   }
 
+  function buildLegend() {
+    const legend = el('ul', 'legend');
+    for (const [status, label] of [['correct', 'Right spot'], ['present', 'Wrong spot'], ['absent', 'Not in word']]) {
+      const item = el('li', '', label);
+      item.prepend(el('span', `swatch ${status}`));
+      legend.appendChild(item);
+    }
+    boardEl.after(legend);
+  }
+
   function el(tag, className, text) {
     const node = document.createElement(tag);
     node.className = className;
@@ -110,6 +120,7 @@
       boardEl = board;
       keyboardEl = keyboard;
       this.reset();
+      buildLegend();
     },
 
     reset() {
