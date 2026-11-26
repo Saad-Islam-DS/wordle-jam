@@ -51,7 +51,10 @@
     .metric .label { font-size: 0.85em; color: var(--accent); margin-top: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
 
     /* Flow */
-    svg.flow { max-width: 100%; height: auto; margin: 32px auto 12px; display: block; }
+    .flow-card { max-width: 95%; margin: 20px auto 16px; padding: 20px 24px; background: rgba(255,255,255,0.03); border: 1px solid rgba(201,169,196,0.25); border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    svg.flow { max-width: 100%; height: auto; display: block; }
+    .takeaway { display: flex; gap: 18px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+    .takeaway span { padding: 8px 18px; border-radius: 999px; background: rgba(184, 50, 90, 0.18); border: 1px solid var(--correct); color: var(--fg); font-weight: 700; font-size: 1em; letter-spacing: 1px; text-transform: uppercase; }
     svg.flow text { fill: var(--fg); font-family: var(--font); font-size: 15px; font-weight: 700; }
     svg.flow text.on-claude { fill: var(--present-fg); }
     svg.flow text.legend-label { font-size: 14px; font-weight: 600; fill: var(--accent); }
@@ -102,6 +105,7 @@
       <section>
         <h2>How we did it</h2>
         <h3>Sudoblark's <em>LLMs in the SDLC</em></h3>
+        <div class="flow-card">
         <svg class="flow" viewBox="0 0 920 400" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
@@ -160,7 +164,13 @@
           <path class="arrow" d="M320 260 Q 320 215, 520 215 Q 720 215, 720 180" stroke-dasharray="5,5"/>
           <text x="520" y="208" text-anchor="middle" class="legend-label">changes requested → iterate</text>
         </svg>
-        <p style="margin-top:4px;font-size:1.1em;"><strong>6 human checkpoints.</strong> 2 Claude steps. Zero direct pushes.</p>
+        </div>
+        <div class="takeaway">
+          <span>Reliable</span>
+          <span>Scalable</span>
+          <span>Tested</span>
+          <span>Code you trust</span>
+        </div>
       </section>
 
       <!-- 4. Results -->
