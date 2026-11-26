@@ -54,7 +54,6 @@
       currentRow = 0;
       gameOver = false;
       won = false;
-      console.log('[game] answer:', answer); // remove before demo
     },
 
     submitGuess(word) {
@@ -77,4 +76,22 @@
       return { guesses, currentRow, maxRows: MAX_ROWS, wordLen: WORD_LEN, gameOver, won };
     },
   };
+
+  // Sanity checks — ensure scoreGuess handles double letters.
+  // Remove before final demo if console noise is an issue.
+  (function runSanityChecks() {
+    const cases = [
+      ['allee', 'apple', ['correct', 'present', 'absent', 'absent', 'correct']],
+      ['sissy', 'mossy', ['absent', 'absent', 'correct', 'correct', 'correct']],
+      ['abbey', 'abbey', ['correct', 'correct', 'correct', 'correct', 'correct']],
+      ['speed', 'abide', ['absent', 'absent', 'present', 'absent', 'present']],
+    ];
+    for (const [g, t, expected] of cases) {
+      const actual = scoreGuess(g, t);
+      console.assert(
+        JSON.stringify(actual) === JSON.stringify(expected),
+        `scoreGuess(${g}, ${t}) expected ${expected} got ${actual}`
+      );
+    }
+  })();
 })();
