@@ -1,76 +1,64 @@
 # wordle-jam
 
-A 2-hour, 3-person Wordle-clone build. Pure HTML + CSS + JS, no frameworks.
+A 2-hour, 3-person Wordle clone. Pure HTML + CSS + JS, no frameworks, no build.
+
+## 👋 First time here?
+
+**Read the file for your role:**
+
+- **Person A — Saad-Islam-DS:** [`PERSON_A.md`](./PERSON_A.md) (game logic)
+- **Person B — emeses-mo:** [`PERSON_B.md`](./PERSON_B.md) (UI + styles)
+- **Person C — saimhussain369-arch:** [`PERSON_C.md`](./PERSON_C.md) (input + word list)
+
+Then open Claude Code in this folder — it auto-reads [`CLAUDE.md`](./CLAUDE.md) + [`ARCHITECTURE.md`](./ARCHITECTURE.md) and you're ready to go.
 
 ## Run it
 
-Open `index.html` in a browser. That's it.
+```sh
+python -m http.server 8000
+# Open http://localhost:8000
+```
 
-## Task split
+Or just double-click `index.html` (word-list loading from file will fall back to hardcoded).
 
-Each person owns different files to minimize merge conflicts.
+## Workflow (from the Sudoblark LLMs-in-SDLC talk)
 
-### Person A — Game logic (`src/game.js`)
-- Pick a daily answer from `assets/words.txt`
-- `submitGuess(word)` → returns array of letter statuses: `"correct" | "present" | "absent"`
-- Track guesses (max 6), win/lose state
-- Validate guess is in word list
+1. Pick a ticket from `work/` matching your letter (A/B/C).
+2. Branch: `person-x/<ticket-id>`.
+3. Implement **only the Acceptance Criteria** — no scope creep.
+4. Small commits, PR to `main`, teammate reviews.
+5. On merge, move the ticket into `work/_DONE/`.
 
-### Person B — UI + styles (`src/ui.js`, `styles.css`)
-- 6×5 grid of tiles
-- On-screen keyboard (QWERTY)
-- Tile flip animation on guess submit
-- Color letter tiles + keyboard keys based on status
-- Win / lose modal
+## Structure
 
-### Person C — Input + word list (`src/input.js`, `assets/words.txt`)
-- Physical keyboard handling (letters, backspace, enter)
-- On-screen keyboard click handling
-- Curate 5-letter word list (answers + allowed guesses)
-- Stretch: share result, stats in localStorage
+```
+wordle-jam/
+├── CLAUDE.md              ← context auto-loaded by Claude Code
+├── ARCHITECTURE.md        ← module contract — DO NOT BREAK silently
+├── PERSON_{A,B,C}.md      ← per-person onboarding
+├── work/                  ← atomic tickets
+│   ├── _WHO_AM_I.md
+│   ├── _TEMPLATE.md
+│   ├── A-*.md             ← game logic tickets
+│   ├── B-*.md             ← UI tickets
+│   ├── C-*.md             ← input + word list tickets
+│   └── _DONE/             ← completed tickets go here
+├── index.html
+├── styles.css
+├── src/
+│   ├── game.js    (A)
+│   ├── ui.js      (B)
+│   └── input.js   (C)
+└── assets/
+    └── words.txt  (C)
+```
 
 ## 2-hour timeline
 
 | Time | Milestone |
 |------|-----------|
-| 0:00–0:15 | Everyone pulls, agrees on data contract between files |
-| 0:15–1:00 | Build core: A ships `submitGuess`, B ships empty grid + keyboard, C ships input events |
-| 1:00–1:30 | Wire together — first playable |
-| 1:30–1:50 | Polish: animations, colors, win modal |
-| 1:50–2:00 | Final commit, celebrate |
-
-## Data contract (don't change without telling everyone)
-
-```js
-// game.js exports:
-window.Game = {
-  init(),                     // set up answer, reset state
-  submitGuess(word),          // returns {statuses: [...], gameOver: bool, won: bool} or null if invalid
-  getState(),                 // {guesses, currentRow, maxRows, answer}
-};
-
-// ui.js exports:
-window.UI = {
-  renderGuess(row, word, statuses),  // paint one row
-  updateKeyboard(letterStatuses),    // {a: "absent", b: "present", ...}
-  showEndScreen(won, answer),
-};
-
-// input.js exports:
-window.Input = {
-  onLetter(cb),   // cb(letter)
-  onBackspace(cb),
-  onEnter(cb),
-};
-```
-
-## Git workflow
-
-```sh
-git pull --rebase            # before you start
-# ... work in YOUR files only ...
-git add <your-files>
-git commit -m "A: submitGuess returns statuses"
-git pull --rebase
-git push
-```
+| 0:00–0:15 | Everyone pulls, reads their PERSON_*.md, picks first ticket |
+| 0:15–1:00 | Core: A on A-01, B on B-01, C on C-03 |
+| 1:00–1:30 | Wire together — first playable, review each other's PRs |
+| 1:30–1:50 | Polish: animations, colors, end screen |
+| 1:50–2:00 | Final PR merge, demo |
