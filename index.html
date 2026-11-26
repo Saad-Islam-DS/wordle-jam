@@ -22,8 +22,8 @@
   <script src="src/input.js"></script>
   <script>
     // Boot
-    window.addEventListener('DOMContentLoaded', () => {
-      Game.init();
+    window.addEventListener('DOMContentLoaded', async () => {
+      await Game.init();
       UI.mount(document.getElementById('board'), document.getElementById('keyboard'));
       Input.bind();
     });

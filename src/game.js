@@ -11,9 +11,35 @@
   let gameOver = false;
   let won = false;
 
-  // TODO (A): load from assets/words.txt — for now hardcoded
-  const ANSWERS = ['crane', 'slate', 'brick', 'plumb', 'ghost'];
-  const ALLOWED = new Set([...ANSWERS, 'apple', 'tiger', 'about', 'audio']);
+  const FALLBACK_ANSWERS = ['crane', 'slate', 'brick', 'plumb', 'ghost'];
+  const FALLBACK_ALLOWED = [...FALLBACK_ANSWERS, 'apple', 'tiger', 'about', 'audio'];
+  const ANSWER_POOL_SIZE = 50;
+
+  let ANSWERS = FALLBACK_ANSWERS;
+  let ALLOWED = new Set(FALLBACK_ALLOWED);
+
+  async function loadWords() {
+    try {
+      const res = await fetch('assets/words.txt');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const lines = (await res.text()).split(/\r?\n/);
+      const seen = new Set();
+      const words = [];
+      for (const raw of lines) {
+        const w = raw.trim().toLowerCase();
+        if (/^[a-z]{5}$/.test(w) && !seen.has(w)) {
+          seen.add(w);
+          words.push(w);
+        }
+      }
+      if (words.length === 0) throw new Error('no valid words');
+      ANSWERS = words.slice(0, ANSWER_POOL_SIZE);
+      ALLOWED = new Set(words);
+    } catch (err) {
+      // file:// or server missing — fall back so demo still works.
+      console.warn('[game] word list load failed, using fallback:', err.message);
+    }
+  }
 
   function pickAnswer() {
     return ANSWERS[Math.floor(Math.random() * ANSWERS.length)];
@@ -48,7 +74,8 @@
   }
 
   window.Game = {
-    init() {
+    async init() {
+      await loadWords();
       answer = pickAnswer();
       guesses = [];
       currentRow = 0;
