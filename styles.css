@@ -1,18 +1,21 @@
 /* Person B owns this file. */
 :root {
-  --bg: #121213;
-  --fg: #ffffff;
-  --tile-border: #3a3a3c;
-  --correct: #538d4e;
-  --present: #b59f3b;
-  --absent: #3a3a3c;
+  --bg: #241726;
+  --fg: #fff6ec;
+  --tile-border: #5a4260;
+  --tile-border-filled: #c9a9c4;
+  --correct: #b8325a;
+  --present: #e8a23a;
+  --present-fg: #241726;
+  --absent: #4a3d4e;
+  --font: ui-rounded, 'SF Pro Rounded', 'Arial Rounded MT Bold', system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font);
   background: var(--bg);
   color: var(--fg);
   min-height: 100vh;
@@ -44,4 +47,56 @@ main {
   gap: 6px;
 }
 
-/* TODO (B): tile styling, keyboard styling, flip animation */
+.row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 62px;
+  gap: 6px;
+}
+
+.tile {
+  width: 62px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--tile-border);
+  border-radius: 14px;
+  font-size: 32px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.tile.filled {
+  border: 3px solid var(--tile-border-filled);
+}
+
+.tile.correct { background: var(--correct); border-color: var(--correct); }
+.tile.present { background: var(--present); border-color: var(--present); color: var(--present-fg); }
+.tile.absent  { background: var(--absent);  border-color: var(--absent); }
+
+#keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.key-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.key {
+  padding: 12px 10px;
+  background: var(--tile-border);
+  color: var(--fg);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* TODO (B): keyboard sizing (B-02), flip animation (B-03) */
