@@ -54,7 +54,10 @@ UI.showMessage(text: string)
   // Transient status line (e.g. "Not in word list").
 
 UI.showEndScreen(won: boolean, answer: string)
-  // Game-over state.
+  // Game-over modal, shown after the last row has flipped. "Play again" calls Game.init() then UI.reset().
+
+UI.reset()
+  // Clears the board, keyboard and message, and closes the modal.
 ```
 
 ### `window.Input` (owned by Person C)
