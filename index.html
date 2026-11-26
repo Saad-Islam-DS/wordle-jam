@@ -5,10 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>wordle-jam</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 20px; }
+    .top-nav a {
+      color: #fff6ec;
+      text-decoration: none;
+      padding: 8px 14px;
+      border: 1px solid #5a4260;
+      border-radius: 8px;
+      font-family: var(--font, system-ui);
+      font-size: 14px;
+      font-weight: 700;
+      transition: background 0.15s;
+    }
+    .top-nav a:hover { background: rgba(255,255,255,0.08); }
+  </style>
 </head>
 <body>
   <header>
     <h1>wordle-jam</h1>
+    <nav class="top-nav">
+      <a href="slides.html">📊 Slides</a>
+    </nav>
   </header>
 
   <main>
