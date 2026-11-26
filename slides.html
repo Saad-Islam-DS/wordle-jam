@@ -53,7 +53,12 @@
     /* Flow */
     svg.flow { max-width: 100%; height: auto; margin: 32px auto 12px; display: block; }
     svg.flow text { fill: var(--fg); font-family: var(--font); font-size: 17px; font-weight: 700; }
-    svg.flow rect { fill: var(--tile-border); stroke: var(--accent); stroke-width: 1.5; rx: 12; }
+    svg.flow text.small { font-size: 12px; font-weight: 500; fill: var(--accent); }
+    svg.flow text.legend-label { font-size: 13px; font-weight: 600; fill: var(--accent); }
+    svg.flow rect { stroke-width: 1.5; rx: 12; }
+    svg.flow rect.human-box { fill: var(--tile-border); stroke: var(--accent); }
+    svg.flow rect.claude-box { fill: var(--present); stroke: var(--present); }
+    svg.flow .claude-box + text { fill: var(--present-fg); }
     svg.flow rect.highlight { fill: var(--correct); stroke: var(--correct); }
     svg.flow path.arrow { fill: none; stroke: var(--accent); stroke-width: 3; marker-end: url(#arrowhead); }
 
@@ -98,23 +103,37 @@
       <section>
         <h2>How we did it</h2>
         <h3>Sudoblark's <em>LLMs in the SDLC</em></h3>
-        <svg class="flow" viewBox="0 0 1100 160" xmlns="http://www.w3.org/2000/svg">
+        <svg class="flow" viewBox="0 0 1200 240" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
               <polygon points="0 0, 10 3, 0 6" fill="#c9a9c4"/>
             </marker>
           </defs>
-          <g><rect x="20"   y="40" width="170" height="80"/><text x="105"  y="88" text-anchor="middle">Tiny ticket</text></g>
-          <g><rect x="220"  y="40" width="170" height="80"/><text x="305"  y="88" text-anchor="middle">Claude drafts</text></g>
-          <g><rect x="420"  y="40" width="170" height="80"/><text x="505"  y="88" text-anchor="middle">Open PR</text></g>
-          <g><rect x="620"  y="40" width="210" height="80" class="highlight"/><text x="725" y="88" text-anchor="middle">Human reviews</text></g>
-          <g><rect x="860"  y="40" width="170" height="80"/><text x="945"  y="88" text-anchor="middle">Merge</text></g>
-          <path class="arrow" d="M190 80 L220 80"/>
-          <path class="arrow" d="M390 80 L420 80"/>
-          <path class="arrow" d="M590 80 L620 80"/>
-          <path class="arrow" d="M830 80 L860 80"/>
+          <!-- Legend -->
+          <g>
+            <rect x="20"   y="10" width="20" height="20" class="human-box"/>
+            <text x="50"   y="26" class="legend-label">Human</text>
+            <rect x="140"  y="10" width="20" height="20" class="claude-box"/>
+            <text x="170"  y="26" class="legend-label">Claude</text>
+          </g>
+          <!-- Flow boxes -->
+          <g><rect x="20"   y="70" width="170" height="90" class="human-box"/><text x="105" y="110" text-anchor="middle">Write ticket</text><text x="105" y="135" text-anchor="middle" class="small">+ plan</text></g>
+          <g><rect x="220"  y="70" width="170" height="90" class="claude-box"/><text x="305" y="110" text-anchor="middle">Claude drafts</text><text x="305" y="135" text-anchor="middle" class="small">code</text></g>
+          <g><rect x="420"  y="70" width="170" height="90" class="human-box"/><text x="505" y="110" text-anchor="middle">Review diff</text><text x="505" y="135" text-anchor="middle" class="small">before commit</text></g>
+          <g><rect x="620"  y="70" width="170" height="90" class="human-box"/><text x="705" y="110" text-anchor="middle">Open PR</text></g>
+          <g><rect x="820"  y="70" width="200" height="90" class="human-box highlight"/><text x="920" y="110" text-anchor="middle">Teammate review</text><text x="920" y="135" text-anchor="middle" class="small">approve or change</text></g>
+          <g><rect x="1050" y="70" width="130" height="90" class="human-box"/><text x="1115" y="118" text-anchor="middle">Merge</text></g>
+          <!-- Arrows -->
+          <path class="arrow" d="M190 115 L220 115"/>
+          <path class="arrow" d="M390 115 L420 115"/>
+          <path class="arrow" d="M590 115 L620 115"/>
+          <path class="arrow" d="M790 115 L820 115"/>
+          <path class="arrow" d="M1020 115 L1050 115"/>
+          <!-- Feedback loop -->
+          <path class="arrow" d="M920 160 Q 920 210, 505 210 Q 305 210, 305 160"/>
+          <text x="612" y="205" text-anchor="middle" class="small">changes requested → iterate</text>
         </svg>
-        <p style="margin-top:12px;font-size:1.2em;"><strong>Never</strong> a direct push. One ticket, one PR, one reviewer.</p>
+        <p style="margin-top:8px;font-size:1.15em;"><strong>5 human checkpoints.</strong> 1 Claude step. Zero direct pushes.</p>
       </section>
 
       <!-- 4. Results -->
