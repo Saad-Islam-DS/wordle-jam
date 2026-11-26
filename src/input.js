@@ -5,6 +5,22 @@
   let currentGuess = '';
   const WORD_LEN = 5;
 
+  function shakeRow(index) {
+    const row = document.querySelectorAll('.row')[index];
+    if (!row) return;
+    row.animate(
+      [
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-6px)' },
+        { transform: 'translateX(6px)' },
+        { transform: 'translateX(-4px)' },
+        { transform: 'translateX(4px)' },
+        { transform: 'translateX(0)' },
+      ],
+      { duration: 400, easing: 'ease-in-out' }
+    );
+  }
+
   function handleKey(key) {
     const { gameOver, currentRow } = Game.getState();
     if (gameOver) return;
@@ -12,12 +28,14 @@
     if (key === 'Enter') {
       if (currentGuess.length !== WORD_LEN) {
         UI.showMessage('Not enough letters');
+        shakeRow(currentRow);
         return;
       }
       const result = Game.submitGuess(currentGuess);
       if (!result) return;
       if (result.error) {
         UI.showMessage(result.error);
+        shakeRow(currentRow);
         return;
       }
       UI.showMessage('');
