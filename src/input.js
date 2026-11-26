@@ -40,6 +40,11 @@
       // Physical keyboard
       document.addEventListener('keydown', (e) => {
         if (e.ctrlKey || e.metaKey || e.altKey) return;
+        if (e.key === 'Enter') {
+          // A focused on-screen key would otherwise also fire a click on Enter.
+          e.preventDefault();
+          if (e.repeat) return;
+        }
         handleKey(e.key);
       });
       // On-screen keyboard
