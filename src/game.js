@@ -41,8 +41,38 @@
     }
   }
 
+  const SEEN_KEY = 'wordle-jam:seen';
+
+  function readSeen() {
+    try {
+      const raw = localStorage.getItem(SEEN_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function writeSeen(list) {
+    try {
+      localStorage.setItem(SEEN_KEY, JSON.stringify(list));
+    } catch {
+      // localStorage unavailable (private mode) — persistence is best-effort.
+    }
+  }
+
   function pickAnswer() {
-    return ANSWERS[Math.floor(Math.random() * ANSWERS.length)];
+    let seen = readSeen();
+    let pool = ANSWERS.filter((w) => !seen.includes(w));
+    if (pool.length === 0) {
+      // Everyone's been seen — reset so the game stays playable.
+      seen = [];
+      pool = ANSWERS;
+    }
+    const picked = pool[Math.floor(Math.random() * pool.length)];
+    writeSeen([...seen, picked]);
+    return picked;
   }
 
   function scoreGuess(guess, target) {
