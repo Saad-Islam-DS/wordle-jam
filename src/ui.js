@@ -68,14 +68,58 @@
     }
   }
 
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function openEndScreen(won, answer) {
+    const used = Game.getState().guesses.length;
+    const backdrop = el('div', 'backdrop');
+    const modal = el('div', 'modal');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'end-title');
+
+    const title = el('h2', '', won ? '🎉 Nice!' : 'Out of guesses');
+    title.id = 'end-title';
+    const detail = el('p', '', won
+      ? `Solved in ${used} ${used === 1 ? 'guess' : 'guesses'}.`
+      : `The word was: ${answer.toUpperCase()}`);
+
+    const again = el('button', 'play-again', 'Play again');
+    again.type = 'button';
+    // input.js cancels Enter on the document, which would stop it pressing this button
+    again.addEventListener('keydown', (e) => e.stopPropagation());
+    again.addEventListener('click', async () => {
+      again.disabled = true;
+      await Game.init();
+      window.UI.reset();
+    });
+
+    modal.append(title, detail, again);
+    backdrop.appendChild(modal);
+    document.body.appendChild(backdrop);
+    again.focus();
+  }
+
   window.UI = {
     mount(board, keyboard) {
       boardEl = board;
       keyboardEl = keyboard;
+      this.reset();
+    },
+
+    reset() {
       keyStatus = {};
       revealEndsAt = 0;
+      currentGuess = '';
       buildBoard();
       buildKeyboard();
+      this.showMessage('');
+      document.querySelector('.backdrop')?.remove();
     },
 
     setCurrentGuess(text) {
@@ -115,9 +159,7 @@
 
     showEndScreen(won, answer) {
       // input calls this right after renderGuess; wait so the flip isn't spoiled
-      setTimeout(() => {
-        this.showMessage(won ? '🎉 You got it!' : `Answer: ${answer.toUpperCase()}`);
-      }, Math.max(0, revealEndsAt - Date.now()));
+      setTimeout(() => openEndScreen(won, answer), Math.max(0, revealEndsAt - Date.now()));
     },
   };
 })();
